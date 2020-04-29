@@ -1,6 +1,6 @@
 # SIFT Workstation Tools
 
-This is a summary and a compilation of all the tools and usage presented by Rob Lee on the SANS Digital Forensics and Incident Response YouTube channel, you can watch the video [here](https://www.youtube.com/watch?v=ai_7Fkv6igw).
+This is a summary and a compilation of all the tools and usage presented by Rob Lee on the SANS Digital Forensics and Incident Response YouTube channel, you can watch the video [here](https://www.youtube.com/watch?v=ai_7Fkv6igw), which pretends to be just a Get Started walkthrought.
 
 This document just recompiles all the tools and usage described in the video, these tools that can be installed in any other system, but are installed by default in SIFT Workstation. Also, there are a bunch of other tools don't listed but are installed.
 
@@ -15,57 +15,31 @@ The system can be installed as a virtual machine appliance on virtualization sof
 In SIFT you can find tools for examining system, registry, memory and network and much more. Some of those are:
 
 - log2timeline (Timeline Generation Tool)
-
 - Rekall Framework (Memory Analysis)
-
 - Volatility Framework (Memory Analysis)
-
 - 3rd Party Volatility Plugins
-
 - bulk_extractor
-
 - autopsy
-
 - afflib
-
 - afflib-tools
-
 - ClamAV
-
 - dc3dd
-
 - imagemounter
-
 - libbde 
-
 - libesedb
-
 - libevt
-
 - libevtx
-
 - libewf 
-
 - libewf-tools
-
 - libewf-python
-
 - libfvde
-
 - libvshadow
-
 - lightgrep
-
 - log2timeline
-
 - Plaso
-
 - Qemu
-
 - regripper and plugins
-
 - SleuthKit
-
 - among others...
 
 You can list some of there with the following commands:
@@ -73,7 +47,7 @@ You can list some of there with the following commands:
 - "ewf" + *Tab*
 - "reg" + *Tab*
 - "log2timeline" + *Tab*
-- "ls /usr/local/bin/*.py" + *Tab*
+- "ls /usr/local/bin/"
 
 There are some Cheat Sheet aimed to summary some important tools or useful information when you are on a Digital Forensic Investigation, for example, Memory Forensics Cheat Sheet, Hex and Regex Forensics Cheat Sheet, Rekall Cheat Sheet, you can find all of them [here](http://dfir.to/DFIR-CheatSheets).
 
@@ -93,7 +67,7 @@ The first step is to go to the folder where the image disk is and get a root acc
 
 *EWF* files are a type of disk image, that contains the contents and structure of a storage device, a disk volume and even physical memory.
 
-Due to that the last command just mount a raw image by itself, actually it creates a file called *ewf1*, this image is located at the folder specified in the `ewfmount` mount, now the file system contained on that image have to be mounted too, that can be done with the following command:
+Due to that the last command just mount a raw image by itself, actually it creates a file called *ewf1*, this image is located at the folder specified in the *ewfmount* mount, now the file system contained on that image have to be mounted too, that can be done with the following command:
 
 `mount -o ro,loop,show_sys_files,streams_interface=windows <ewf image> <mount point>`
 
@@ -107,7 +81,7 @@ Finally, after the image have been analyzed, both images (ewf and file system) n
 
 
 
-### imageMounter.py
+### *imageMounter.py*
 
 An easiest way to do all this process is by using the imageMounter.py script, which can do all this steps automatically, mount *ewf* and file system images, as simple as:
 
@@ -169,6 +143,8 @@ The output can be formated with `psort.py`, for detailed information, go to the 
 
 SIFT has installed *Rekall* and *Volatility* for this purpose.
 
+### *Volatility*
+
 For *Volatitility*, there are a lot of plugins that can be installed to extend its functionalities.
 
 To use *Volatility*, the first thing to do is to check for the profile we're been using, this can be determined, using:
@@ -188,4 +164,32 @@ We can list the available plugins or consult information about the usage of cert
 
 
 ## Registry Examinations
+
+This is refereed to analyze the Windows *registry hives*, such as the *NTUSER.DAT*, *SAM*, *SECURITY*, and other well known registry files described in the next table:
+
+Registry | Description | Location
+--- | --- | ---
+NTUSER | Local configuration of a certain account. | User folder 
+SAM | "Security Accounts Manager", it contains all accounts configuration, such as username, unique id and cryptographic hash of user's account. | /Windows/System32/config 
+SECURITY | It stores the file permissions a user can access and enforce the security police applicable to a certain user. | /Windows/System32/config 
+SYSTEM | Contains information about the windows system setup. | /Windows/System32/config 
+SOFTWARE | It stores software and windows settings. | /Windows/System32/config 
+
+### *RegRipper*
+
+One of the most used tools is *RegRipper*.
+
+*RegRipper* is a tool, which plugins need to be updated frequently. We can run it with:
+
+`rip.pl -r <registry hive> -f <plugin>`
+
+For further information and list of files, can be run with the flag for help: `rip.pl -h`.
+
+### *ShimCacheParser.py*
+
+*ShimCacheParser* is a third party tool which can extract out data from registry hives. This can be used for look for potential identifying malware, and its basic syntax it's as follows:
+
+`ShimCacheParser.py -i <registry hive> --bom`
+
+The last command it's used to extract the data of a registry hive and parse it as a *.csv* file, detailed information can be consulted with: `ShimCacheParser.py -h`.
 
