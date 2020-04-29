@@ -2,7 +2,7 @@
 
 This is a summary and a compilation of all the tools and usage presented by Rob Lee on the SANS Digital Forensics and Incident Response YouTube channel, you can watch the video [here](https://www.youtube.com/watch?v=ai_7Fkv6igw).
 
-This document recompiles all the tools and usage described in the video, these tools that can be installed in any other system, but are installed by default in SIFT Workstation.
+This document just recompiles all the tools and usage described in the video, these tools that can be installed in any other system, but are installed by default in SIFT Workstation. Also, there are a bunch of other tools don't listed but are installed.
 
  
 
@@ -70,10 +70,10 @@ In SIFT you can find tools for examining system, registry, memory and network an
 
 You can list some of there with the following commands:
 
-- "ewf" + Tab
-- "reg" + Tab
-- "log2timeline" + Tab
-- "ls /usr/local/bin/*.py" + Tab
+- "ewf" + *Tab*
+- "reg" + *Tab*
+- "log2timeline" + *Tab*
+- "ls /usr/local/bin/*.py" + *Tab*
 
 There are some Cheat Sheet aimed to summary some important tools or useful information when you are on a Digital Forensic Investigation, for example, Memory Forensics Cheat Sheet, Hex and Regex Forensics Cheat Sheet, Rekall Cheat Sheet, you can find all of them [here](http://dfir.to/DFIR-CheatSheets).
 
@@ -87,7 +87,7 @@ In SANS we have a SMB server, we can just copy the IP address from the machine, 
 
 ## Mounting Disk Images
 
-The first step is to go to the folder where the image disk is and get a root account with `sudo su`. Next we can mount a raw image (E01 or Expert Witness Format) in the system, it can be done with the following command:
+The first step is to go to the folder where the image disk is and get a root account with `sudo su`. Next we can mount a raw image (*E01* or *Expert Witness Format*) in the system, it can be done with the following command:
 
 `ewfmount <image> <mount point>` , for example: `ewfmount image.e01 /mnt/awf_image`
 
@@ -139,7 +139,7 @@ Once run this command, all the snapshots can be listed in that folder, each of t
 
 `mountwin vss* /mount/shadow_mount/vss*`
 
-`*` here represents the volume shadow's number
+**\*** here represents the volume shadow's number
 
 In case there was a lot of volume shadow files, this process can be automated with a for loop from the `/mnt/vss` folder as follows:
 
@@ -150,4 +150,42 @@ If an error is showed, it means that a file is corrupted, but in the `/mnt/shado
 
 
 ## Creating Timelines via SIFT
+
+SIFT Workstation also includes the *Plaso* (*log2timeline*) framework, which creates timelines. It extracts timestamps from the files found in a forensics image.
+
+We can run it in the *ewf1* files as follows:
+
+`log2timeline.py /cases/<output>.dump ewf1`
+
+And the it will prompt us for the volume shadow files we want to extract from, detailed instructions are described right there.
+
+It might take a long time, depends of the size of the image, this due to the fact that all the files are analyzed.
+
+The output can be formated with `psort.py`, for detailed information, go to the documentation or to the SIFT [Plaso Cheat Sheet](https://digital-forensics.sans.org/media/Plaso-Cheat-Sheet.pdf).
+
+
+
+## Memory Analysis via SIFT
+
+SIFT has installed *Rekall* and *Volatility* for this purpose.
+
+For *Volatitility*, there are a lot of plugins that can be installed to extend its functionalities.
+
+To use *Volatility*, the first thing to do is to check for the profile we're been using, this can be determined, using:
+
+`volatitlity -f <image file> imageinfo`
+
+Here we can see some profiles, and it's necessary to determine which one to use, then we can analyze it with plugins with the following structure:
+
+`volatitlity -f <image file> --profile=<profile> <plugin>`
+
+We can list the available plugins or consult information about the usage of certain plugin:
+
+`volatility --info`
+
+`volatility <plugin> -h`
+
+
+
+## Registry Examinations
 
