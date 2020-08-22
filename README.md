@@ -181,7 +181,7 @@ One of the most used tools is *RegRipper*.
 
 *RegRipper* is a tool, which plugins need to be updated frequently. We can run it with:
 
-`rip.pl -r <registry hive> -f <plugin>`
+`rip.pl -r <registry hive> -p <plugin>`
 
 For further information and list of files, can be run with the flag for help: `rip.pl -h`.
 
